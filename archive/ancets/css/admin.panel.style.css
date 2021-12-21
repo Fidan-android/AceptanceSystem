@@ -1,0 +1,15 @@
+nav {
+    background-color: #51aaa1;
+}
+
+.user_info, .create_req, .c-table h5 {
+    margin: 20px;
+}
+
+.create_req {
+    width: 50%;
+}
+
+.create_req table td{
+    vertical-align: top;
+}
