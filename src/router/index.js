@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { checkPermission } from '../helpers/fetch.js'
 
 Vue.use(VueRouter)
 
@@ -13,13 +14,18 @@ const routes = [
         next("/login");
       }
     }),
-    name: 'Home',
-    component: () => import('../views/Home.vue')
+    name: 'Panel',
+    component: () => lazyLoadView(localStorage.getItem("token"))
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: () => import('../views/Registration.vue')
   }
 ]
 
@@ -28,5 +34,17 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+async function lazyLoadView(token) {
+  var permission = (await checkPermission(token))['permission'];
+  
+  if (permission === "user") {
+    return import('../views/UserPanel.vue');
+  } else if (permission == "admin") {
+    return import('../views/AdminPanel.vue');
+  } else {
+    return import('../views/DispatcherPanel.vue');
+  }
+}
 
 export default router

@@ -9,4 +9,5 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+import 'materialize-css/dist/css/materialize.min.css'
 import './assets/css/main.css';
