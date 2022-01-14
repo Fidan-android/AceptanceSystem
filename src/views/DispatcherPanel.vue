@@ -20,7 +20,7 @@
             <h5 id="user_text"></h5>
         </section>
 
-        <section class="create_req">
+        <!-- <section class="create_req">
             <h6>Оформить заявку</h6>
             <div class="row">
                 <form class="col s12">
@@ -94,17 +94,18 @@
                     </button>
                 </form>
             </div>
-        </section>
+        </section> -->
 
         <section class="c-table">
-            <h5>Ваши заявки</h5>
+            <h5>Текущие заявки</h5>
             <table class="striped centered">
                 <thead>
                 <tr>
                     <th>Статус</th>
                     <th>Дата создания</th>
-                    <th>Составитель</th>
+                    <th>Заголовок</th>
                     <th>Описание</th>
+                    <th>Составитель</th>
                     <th>Приоритет</th>
                     <th>Срок</th>
                     <th>Исполнитель</th>
@@ -112,25 +113,12 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>Закрыт</td>
-                    <td>20.20.2021</td>
-                    <td>Пользователь</td>
-                    <td>Установка антивируса</td>
-                    <td>Высокий</td>
-                    <td>2 дня</td>
-                    <td>АСУТП</td>
-                </tr>
-
-                <tr>
-                    <td>В работе</td>
-                    <td>20.20.2021</td>
-                    <td>Пользователь</td>
-                    <td>Переустановка ОС</td>
-                    <td>Высокий</td>
-                    <td>2 дня</td>
-                    <td>АСУТП</td>
-                </tr>
+                    <RequestDispatcher v-for="request in this.requests" :key="request.id" 
+                        :status="request.status" :created_date="request.created_date" 
+                        :title="request.title" :comment="request.comment" 
+                        :user_compiler="request.user_compiler" :priority="request.priority" 
+                        :completion_date="request.completion_date" :whom="request.whom" 
+                        :id="request.id"/>
                 </tbody>
             </table>
         </section>
@@ -157,20 +145,26 @@
 
 <script>
     import M from 'materialize-css';
-    import { signout } from '../helpers/fetch.js'
-    import { userInfo } from '../helpers/fetch.js'
+    import { signout } from '../helpers/fetch.js';
+    import { dispatcherInfo } from '../helpers/fetch.js';
+    import RequestDispatcher from '../components/RequestDispatcher.vue';
 
     export default {
         name: "UserPanel",
-        created() {
-            userInfo(localStorage.getItem("token")).then(data => {
-                this.username = data['fullname'];
-            });
-        },
         data(){
             return {
                 username: "",
+                requests: []
             }
+        },
+        created() {
+            dispatcherInfo(localStorage.getItem("token")).then(data => {
+                this.username = data['fullname'];
+                this.requests = data['requests'];
+            });
+        },
+        components: {
+          RequestDispatcher  
         },
         methods: {
             onExit(e){

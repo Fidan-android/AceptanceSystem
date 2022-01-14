@@ -36,8 +36,19 @@ export async function userInfo(token) {
     return response.json();
 }
 
-export async function createTodo(token, forma) {
-    var response = await fetch("http://ar/user/create-todo.php", {
+export async function dispatcherInfo(token) {
+    var response = await fetch("http://ar/user/dispatcher-info.php", {
+        method: "GET",
+        headers: {
+            "Authorization" : "Bearer " + token
+        }
+    });
+
+    return response.json();
+}
+
+export async function createRequest(token, forma) {
+    var response = await fetch("http://ar/user/create-request.php", {
         method: "POST",
         headers: {
             "Authorization" : "Bearer " + token
@@ -48,13 +59,13 @@ export async function createTodo(token, forma) {
     return response.json();
 }
 
-export async function deleteTodo(token, todo_id) {
-    var response = await fetch("http://ar/user/delete-todo.php", {
+export async function deleteRequest(token, request_id) {
+    var response = await fetch("http://ar/user/delete-request.php", {
         method: "POST",
         headers: {
             "Authorization" : "Bearer " + token
         },
-        body: JSON.stringify({todo_id : todo_id})
+        body: JSON.stringify({request_id : request_id})
     });
 
     return response.json();
