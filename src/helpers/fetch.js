@@ -47,6 +47,14 @@ export async function dispatcherInfo(token) {
     return response.json();
 }
 
+export async function getOffices() {
+    var response = await fetch("http://ar/user/get-office.php", {
+        method: "GET",
+    });
+
+    return response.json();
+}
+
 export async function createRequest(token, forma) {
     var response = await fetch("http://ar/user/create-request.php", {
         method: "POST",

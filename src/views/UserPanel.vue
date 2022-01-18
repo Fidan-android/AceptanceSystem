@@ -3,13 +3,22 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <div><a href="#" class="brand-logo">&nbsp;Система заявок</a></div>
+                    <!-- <div><a href="#" class="brand-logo">&nbsp;Система заявок</a></div>
                     <div class="dropdown">
                         <div class="right dropbtn">Привет, {{ username }}</div>
                         <div class="dropdown-content">
                             <a @click="onExit">Выйти</a>
                         </div>
-                    </div>
+                    </div> -->
+                    <a href="#" class="brand-logo">&nbsp;Система заявок. Техническая панель</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
+                        <li>
+                            <div>Привет, {{ username }}</div>
+                            <ul class="li-menu">
+                                <li><a @click="onExit">Выйти</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </header>

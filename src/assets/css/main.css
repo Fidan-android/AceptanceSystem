@@ -19,7 +19,31 @@ a {
     width: 100%;
     display: flex;
     justify-content: center;
-    -webkit-align-items: center;
+}
+
+.li-menu {
+    display: none;
+    flex-direction: column;
+    text-align: center;
+}
+
+.li-menu a {
+    color: #fff;
+}
+
+.li-menu li {
+    background-color: #51aaa1;
+    border-top: 1px solid #47948c;
+}
+
+.nav-menu li:hover > ul {
+    display: flex;
+    animation: ani 0.4s forwards;
+}
+
+@keyframes ani {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
 
 .form__wrapper {
@@ -89,4 +113,75 @@ a {
 .btn_grey:hover {
     background-color: #dedede;
     border-bottom: 2px solid #dedede;
+}
+
+.modal-window, .info_item {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 15px;
+}
+
+.modal__content {
+    width: 100%;
+    max-width: 755px;
+    margin-top: 40px;
+    background: #f9f9f9;
+    position: relative;
+    box-shadow: 0 5px 15px black;
+    border-radius: 13px;
+}
+
+.m-header {
+    background-size: cover;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 25px;
+    border-radius: 13px;
+    background-color: #51aaa1;
+    color: #fff;
+}
+
+.m-section {
+    border-radius: 20px 20px 13px 13px;
+    padding: 25px 90.24px;
+}
+
+.close_btn {
+    background: url('../img/close_icon.png') center no-repeat;
+    background-size: cover;
+    width: 28px;
+    height: 28px;
+    display: block;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.f-item {
+    margin: 0 10px;
+}
+
+.m-white_btn {
+    background-color: #51aaa1;
+    color: #fff;
+    text-align: center;
+    padding: 6px;
+    border-radius: 3px;
+    outline: none;
+    border: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+
+.m-white_btn:active {
+    background-color: #3f837c;
 }

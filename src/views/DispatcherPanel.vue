@@ -3,15 +3,15 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <div><a href="#" class="brand-logo">&nbsp;Система заявок</a></div>
-                    <div class="dropdown">
-                        <ul id="nav-mobile" class="right hide-on-med-and-down dropbtn">
-                            <li>Привет, {{ username }}</li>
-                        </ul>
-                        <div class="dropdown-content">
-                            <a @click="onExit">Выйти</a>
-                        </div>
-                    </div>
+                    <a href="#" class="brand-logo">&nbsp;Система заявок. Панель диспетчера</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
+                        <li>
+                            <div>Привет, {{ username }}</div>
+                            <ul class="li-menu">
+                                <li><a @click="onExit">Выйти</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </header>
@@ -20,105 +20,28 @@
             <h5 id="user_text"></h5>
         </section>
 
-        <!-- <section class="create_req">
-            <h6>Оформить заявку</h6>
-            <div class="row">
-                <form class="col s12">
-                    <table>
-                        <tr>
-                            <td>
-                                <p>Исполнитель</p>
-                                <p>
-                                    <label>
-                                        <input name="group1" type="radio" checked  value="asutp"/>
-                                        <span>АСУТП</span>
-                                    </label>
-                                </p>
-                                <p>
-                                    <label>
-                                        <input name="group1" type="radio" value="kipia"/>
-                                        <span>КИПиА</span>
-                                    </label>
-                                </p>
-
-                                <p>
-                                    <label>
-                                        <input name="group1" type="radio" value="sysadmins"/>
-                                        <span>Сисадмины</span>
-                                    </label>
-                                </p>
-                            </td>
-
-                            <td>
-                                <p>Приоритет</p>
-                                <p>
-                                    <label>
-                                        <input name="group2" type="radio" checked  value="low"/>
-                                        <span>Низкий</span>
-                                    </label>
-                                </p>
-                                <p>
-                                    <label>
-                                        <input name="group2" type="radio" value="middle"/>
-                                        <span>Средний</span>
-                                    </label>
-                                </p>
-
-                                <p>
-                                    <label>
-                                        <input name="group2" type="radio" value="high"/>
-                                        <span>Высокий</span>
-                                    </label>
-                                </p>
-                            </td>
-
-                            <td>
-                                <p>Срок</p>
-                                <p>
-                                    <input type="text" class="datepicker" placeholder="Change date">
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="input-field col s12">
-                                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                    <label for="textarea1">Описание</label>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    <br>
-                    <button class="btn waves-effect waves-light" type="submit" name="action">
-                        Создать
-                    </button>
-                </form>
-            </div>
-        </section> -->
+        <ModalWindow v-if="this.showModal" :onCloseModal="this.onCloseModal" :onSaveModal="this.onSaveModal"/>
 
         <section class="c-table">
             <h5>Текущие заявки</h5>
             <table class="striped centered">
                 <thead>
                 <tr>
-                    <th>Статус</th>
                     <th>Дата создания</th>
                     <th>Заголовок</th>
                     <th>Описание</th>
                     <th>Составитель</th>
                     <th>Приоритет</th>
-                    <th>Срок</th>
-                    <th>Исполнитель</th>
+                    <th>Управление</th>
                 </tr>
                 </thead>
 
                 <tbody>
                     <RequestDispatcher v-for="request in this.requests" :key="request.id" 
-                        :status="request.status" :created_date="request.created_date" 
                         :title="request.title" :comment="request.comment" 
-                        :user_compiler="request.user_compiler" :priority="request.priority" 
-                        :completion_date="request.completion_date" :whom="request.whom" 
-                        :id="request.id"/>
+                        :user_compiler="request.user_compiler" :priority="request.priority"
+                        :id="request.id" :created_date="request.created_date" 
+                        :showModalBox="onShowModalWindow" :cancelRequest="cancelRequest"/>
                 </tbody>
             </table>
         </section>
@@ -148,23 +71,27 @@
     import { signout } from '../helpers/fetch.js';
     import { dispatcherInfo } from '../helpers/fetch.js';
     import RequestDispatcher from '../components/RequestDispatcher.vue';
+    import ModalWindow from '../components/ModalWindow.vue';
 
     export default {
-        name: "UserPanel",
-        data(){
-            return {
-                username: "",
-                requests: []
-            }
+        name: "DispatcherPanel",
+        components: {
+          RequestDispatcher,
+          ModalWindow, 
         },
         created() {
+            console.log(this.showModal);
             dispatcherInfo(localStorage.getItem("token")).then(data => {
                 this.username = data['fullname'];
                 this.requests = data['requests'];
             });
         },
-        components: {
-          RequestDispatcher  
+        data(){
+            return {
+                username: "",
+                requests: [],
+                showModal: false,
+            }
         },
         methods: {
             onExit(e){
@@ -180,6 +107,22 @@
                         console.log(data);
                     }
                 });
+            },
+            onShowModalWindow(e){
+                e.preventDefault();
+                this.showModal = true;
+            },
+            cancelRequest(e) {
+                e.preventDefault();
+
+            },
+            onCloseModal(e){
+                e.preventDefault();
+                this.showModal = false;
+            },
+            onSaveModal(e){
+                e.preventDefault();
+                console.log("Влад курва");
             }
         },
         mounted () {
