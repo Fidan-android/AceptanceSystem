@@ -37,7 +37,7 @@ const router = new VueRouter({
 
 async function lazyLoadView(token) {
   var permission = (await checkPermission(token))['permission'];
-  
+  //проверяю доступность и показываю определенные панельки
   if (permission === "user") {
     return import('../views/UserPanel.vue');
   } else if (permission == "admin") {

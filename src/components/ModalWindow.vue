@@ -2,17 +2,17 @@
     <div class="modal-window">
         <div class="modal__content">
             <div class="m-header">
-                <h4 class="title">Management</h4>
+                <h4 class="title">Управление</h4>
                 <a class="close_btn" id="close" @click="this.onCloseModal"></a>
             </div>
             <div class="m-section" align="center">
                 <form @submit="onSaveModal">
                     <label v-for="(office, key) in offices" :key="key" class="f-item">
-                        <input name="offices" class="with-gap" type="radio" checked required/>
+                        <input name="offices" :id="office.id" class="with-gap" type="radio" required/>
                         <span>{{ office.name }}</span>
                     </label>
-                    <input type="text" class="datepicker" placeholder="Выберите дату срока" required>
-                    <input type="submit" class="m-white_btn" value="save" style="width: 100%;">
+                    <input type="text" class="datepicker" name="end_date" placeholder="Выберите дату срока" required>
+                    <input type="submit" class="m-white_btn" value="Сохранить" style="width: 100%;">
                 </form>
             </div>
         </div>

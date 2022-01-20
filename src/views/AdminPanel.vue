@@ -3,107 +3,43 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">&nbsp;Техническая панель</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a @click="onExit">Выйти из аккаунта</a></li>
+                    <a href="#" class="brand-logo">&nbsp;Система заявок. Панель администратора</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
+                        <li>
+                            <div>Привет, {{ office_name }}</div>
+                            <ul class="li-menu">
+                                <li><a @click="onExit">Выйти</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>
         </header>
+
         <section class="user_info">
             <h5 id="user_text"></h5>
-        </section>
-
-        <section style="margin: 20px;">
-            <center>
-            <nav>
-                <div>
-                    <ul class="hide-on-med-and-down">
-                        <li><a href="#">Все заявки</a></li>
-                        <li><a href="#">В работе</a></li>
-                        <li><a href="#">Отклонены</a></li>
-                        <li><a href="#">Закрыты</a></li>
-                    </ul>
-                </div>
-            </nav>
-            </center>
         </section>
 
         <section class="c-table" style="margin: 20px;">
             <table class="striped centered">
                 <thead>
                 <tr>
-                    <th>Статус</th>
                     <th>Дата создания</th>
-                    <th>Составитель</th>
+                    <th>Заголовок</th>
                     <th>Описание</th>
                     <th>Приоритет</th>
                     <th>Срок</th>
                     <th>Исполнитель</th>
-                    <th>Управление</th>
-                    <th>Перенаправить</th>
+                    <th>Управление</th> 
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>Отклонено</td>
-                    <td>20.20.2021</td>
-                    <td>Пользователь</td>
-                    <td>Установка антивируса</td>
-                    <td>Высокий</td>
-                    <td>2 дня</td>
-                    <td>АСУТП</td>
-                    <td>Недоступно</td>
-                    <td>Недоступно</td>
-                </tr>
-
-                <tr>
-                    <td>Перенаправлено</td>
-                    <td>20.20.2021</td>
-                    <td>Пользователь</td>
-                    <td>Переустановка ОС</td>
-                    <td>Высокий</td>
-                    <td>2 дня</td>
-                    <td>АСУТП</td>
-                    <td>
-                        Недоступно
-                    </td>
-                    <td>
-                        КИПиА
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Ожидание</td>
-                    <td>03.12.2021</td>
-                    <td>Отдел АСУТП</td>
-                    <td>Переустановка ОС</td>
-                    <td>Средний</td>
-                    <td>2 дня</td>
-                    <td>Сисадмины</td>
-                    <td>
-                        <div class="buttons_div">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">
-                                Принять
-                            </button>
-                            <button class="btn waves-effect waves-light" type="submit" name="action" style="background-color: #b50000;">
-                                Отклонить
-                            </button>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="buttons_div">
-                            <button class="btn waves-effect waves-light" type="submit" name="action" style="background-color: #ffcc00">
-                                КИПиА
-                            </button>
-
-                            <button class="btn waves-effect waves-light" type="submit" name="action" style="background-color: #ffcc00">
-                                Сисадмины
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                    <RequestAdmin v-for="request in this.requests" :key="request.id" 
+                        :created_date="request.created_date" :title="request.title" 
+                        :comment="request.comment" :priority="request.priority" 
+                        :completion_date="request.completion_date" :id="request.id"
+                        :changeRequest="changeRequest" :executor="request.executor"/>
                 </tbody>
             </table>
         </section>
@@ -130,9 +66,13 @@
 
 <script>
     import M from 'materialize-css';
-    import { signout } from '../helpers/fetch.js'
+    import RequestAdmin from '../components/RequestAdmin.vue';
+    import { signout, adminInfo, requestChange } from '../helpers/fetch.js'
     export default {
         name: "AdminPanel",
+        components: {
+          RequestAdmin,
+        },
         methods: {
             onExit(e){
                 e.preventDefault();
@@ -147,6 +87,24 @@
                         console.log(data);
                     }
                 });
+            },
+            changeRequest(e){
+                e.preventDefault();
+                requestChange(localStorage.getItem("token"), e.target.id).then(data => {
+                    this.requests = data['requests'];
+                });
+            }
+        },
+        created() {
+            adminInfo(localStorage.getItem("token")).then(data => {
+                this.office_name = data['office'];
+                this.requests = data['requests'];
+            });
+        },
+        data(){
+            return {
+                office_name: "",
+                requests: [],
             }
         },
         mounted () {

@@ -6,10 +6,10 @@
         <td>{{ user_compiler }}</td>
         <td>{{ priority }}</td>
         <td>
-            <form @submit="showModalBox">
+            <form @submit="showModalBox" :id="id">
                 <button class="btn waves-effect orange darken-3" type="submit" name="action">Управление</button>
             </form><br>
-            <form @submit="cancelRequest">
+            <form @submit="cancelRequest" :id="id">
                 <button class="btn waves-effect red darken-3" type="submit" name="cancel">Отклонить</button>
             </form>
         </td>

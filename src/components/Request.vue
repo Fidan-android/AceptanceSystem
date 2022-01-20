@@ -8,7 +8,7 @@
         <td>{{ completion_date }}</td>
         <td>{{ whom }}</td>
         <td>
-            <div class="buttons_div">
+            <div class="buttons_div" >
                 <form @submit="this.onDelete" :class="deleteElement">
                     <button class="btn waves-effect red accent-4" type="submit" name="action">Удалить</button>
                     <input type="hidden" name="request_id" :value="id">
@@ -73,17 +73,25 @@
                 }
             },
             deleteElement: function(){
-                if(this.status.toLowerCase() === "отказано" || this.status.toLowerCase() === "выполнено") {
-                    return "showCssClass";
-                } else {
+                if (this.status.toLowerCase() === "передано") {
                     return "hideCssClass";
+                } else {
+                    if(this.status.toLowerCase() === "отказано" || this.status.toLowerCase() === "выполнено") {
+                        return "showCssClass";
+                    } else {
+                        return "hideCssClass";
+                    }
                 }
             },
             cancelElement: function(){
-                if(this.status.toLowerCase() === "отказано" || this.status.toLowerCase() === "выполнено") {
+                if (this.status.toLowerCase() === "передано") {
                     return "hideCssClass";
                 } else {
-                    return "showCssClass";
+                    if(this.status.toLowerCase() === "отказано" || this.status.toLowerCase() === "выполнено") {
+                        return "hideCssClass";
+                    } else {
+                        return "showCssClass";
+                    }
                 }
             }
         },

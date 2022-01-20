@@ -22,9 +22,9 @@
 
         <ModalWindow v-if="this.showModal" :onCloseModal="this.onCloseModal" :onSaveModal="this.onSaveModal"/>
 
-        <section class="c-table">
+        <section class="c-table" v-if="loaded">
             <h5>Текущие заявки</h5>
-            <table class="striped centered">
+            <table class="striped centered" >
                 <thead>
                 <tr>
                     <th>Дата создания</th>
@@ -44,6 +44,9 @@
                         :showModalBox="onShowModalWindow" :cancelRequest="cancelRequest"/>
                 </tbody>
             </table>
+        </section>
+        <section v-if="!loaded">
+                Текущих заявок пока нет
         </section>
     </div>
 </template>
@@ -70,6 +73,7 @@
     import M from 'materialize-css';
     import { signout } from '../helpers/fetch.js';
     import { dispatcherInfo } from '../helpers/fetch.js';
+    import { redirectToOffice } from '../helpers/fetch.js';
     import RequestDispatcher from '../components/RequestDispatcher.vue';
     import ModalWindow from '../components/ModalWindow.vue';
 
@@ -80,17 +84,22 @@
           ModalWindow, 
         },
         created() {
-            console.log(this.showModal);
             dispatcherInfo(localStorage.getItem("token")).then(data => {
                 this.username = data['fullname'];
                 this.requests = data['requests'];
             });
+        },
+        computed: {
+            loaded() {
+                return this.requests?.length > 0
+            }
         },
         data(){
             return {
                 username: "",
                 requests: [],
                 showModal: false,
+                idRequest: 0,
             }
         },
         methods: {
@@ -111,6 +120,7 @@
             onShowModalWindow(e){
                 e.preventDefault();
                 this.showModal = true;
+                this.idRequest = e.target.id;
             },
             cancelRequest(e) {
                 e.preventDefault();
@@ -122,7 +132,13 @@
             },
             onSaveModal(e){
                 e.preventDefault();
-                console.log("Влад курва");
+                var office = Array.from(e.target.offices).filter(item => item.checked)[0].id;
+                var date_end = (new Date(e.target.end_date.value)).toJSON().slice(0,10).replace(/-/g,'-');
+                console.log(date_end);
+                redirectToOffice(this.idRequest, office, date_end).then(data => {
+                    this.requests = data['requests'];
+                    this.showModal = false;
+                });
             }
         },
         mounted () {
