@@ -47,8 +47,30 @@ export async function dispatcherInfo(token) {
     return response.json();
 }
 
+export async function matcherInfo(token) {
+    var response = await fetch("http://ar/user/matcher-info.php", {
+        method: "GET",
+        headers: {
+            "Authorization" : "Bearer " + token
+        }
+    });
+
+    return response.json();
+}
+
 export async function adminInfo(token) {
     var response = await fetch("http://ar/user/admin-info.php", {
+        method: "GET",
+        headers: {
+            "Authorization" : "Bearer " + token
+        }
+    });
+
+    return response.json();
+}
+
+export async function directorInfo(token) {
+    var response = await fetch("http://ar/user/director-info.php", {
         method: "GET",
         headers: {
             "Authorization" : "Bearer " + token
@@ -68,6 +90,18 @@ export async function getOffices() {
 
 export async function createRequest(token, forma) {
     var response = await fetch("http://ar/user/create-request.php", {
+        method: "POST",
+        headers: {
+            "Authorization" : "Bearer " + token
+        },
+        body: JSON.stringify(Object.fromEntries((new FormData(forma)).entries()))
+    });
+
+    return response.json();
+}
+
+export async function cancelRequest(token, forma) {
+    var response = await fetch("http://ar/user/cancel-request.php", {
         method: "POST",
         headers: {
             "Authorization" : "Bearer " + token
@@ -106,18 +140,6 @@ export async function deleteRequest(token, request_id) {
             "Authorization" : "Bearer " + token
         },
         body: JSON.stringify({request_id : request_id})
-    });
-
-    return response.json();
-}
-
-export async function editTodo(token, forma) {
-    var response = await fetch("http://ar/user/edit-todo.php", {
-        method: "POST",
-        headers: {
-            "Authorization" : "Bearer " + token
-        },
-        body: JSON.stringify(Object.fromEntries((new FormData(forma)).entries()))
     });
 
     return response.json();

@@ -3,13 +3,6 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <!-- <div><a href="#" class="brand-logo">&nbsp;Система заявок</a></div>
-                    <div class="dropdown">
-                        <div class="right dropbtn">Привет, {{ username }}</div>
-                        <div class="dropdown-content">
-                            <a @click="onExit">Выйти</a>
-                        </div>
-                    </div> -->
                     <a href="#" class="brand-logo">&nbsp;Система заявок. Техническая панель</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
                         <li>
@@ -56,9 +49,9 @@
                 <thead>
                 <tr>
                     <th>Статус</th>
+                    <th>Согласование</th>
                     <th>Дата создания</th>
                     <th>Заголовок</th>
-                    <th>Описание</th>
                     <th>Приоритет</th>
                     <th>Срок</th>
                     <th>Исполнитель</th>
@@ -71,7 +64,8 @@
                         :status="request.status" :created_date="request.created_date" 
                         :title="request.title" :comment="request.comment"
                         :priority="request.priority" :completion_date="request.completion_date"
-                        :whom="request.whom" :id="request.id" :onDelete="onDelete"/>
+                        :whom="request.whom" :id="request.id" 
+                        :onDelete="onDelete" :note="request.note"/>
                 </tbody>
             </table>
         </section>
@@ -97,6 +91,10 @@
 
     .create_req table td{
         vertical-align: top;
+    }
+
+    td {
+        padding-top: 20px;
     }
 </style>
 
@@ -142,7 +140,8 @@
                         setTimeout(() => {
                             localStorage.removeItem("token");
                             route.push('/login').catch(() => {});
-                        }, 1500);
+                            route.go();
+                        }, 300);
                     } else {
                         console.log(data);
                     }

@@ -1,9 +1,26 @@
 <template>
     <tr>
-        <td :class="statusClass">{{ status }}</td>
+        <td :class="statusClass">
+            <ul id="nav-mobile" class="hide-on-med-and-down nav-menu">
+                <li>
+                    <div>{{ status }}</div>
+                    <ul class="li-menu">
+                        <li>{{ note }}</li>
+                    </ul>
+                </li>
+            </ul></td>
+        <td></td>
         <td>{{ created_date }}</td>
-        <td>{{ title }}</td>
-        <td>{{ comment }}</td>
+        <td>
+            <ul id="nav-mobile" class="hide-on-med-and-down nav-menu" >
+                <li>
+                    <div>{{ title }}</div>
+                    <ul class="li-menu">
+                        <li>{{ comment }}</li>
+                    </ul>
+                </li>
+            </ul>
+        </td>
         <td>{{ priority }}</td>
         <td>{{ completion_date }}</td>
         <td>{{ whom }}</td>
@@ -51,6 +68,7 @@
         props: {
             id: String,
             status: String,
+            note: String,
             created_date: String,
             title: String,
             comment: String,

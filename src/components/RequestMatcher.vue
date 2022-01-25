@@ -1,6 +1,5 @@
 <template>
     <tr>
-        <td>Начальник цеха - согласовано <br> ИБ - согласовано</td>
         <td>{{ created_date }}</td>
         <td>
             <ul id="nav-mobile" class="hide-on-med-and-down nav-menu">
@@ -12,42 +11,42 @@
                 </li>
             </ul>
         </td>
-        <td>{{ priority }}</td>
-        <td>{{ completion_date }}</td>
-        <td>{{ executor }}</td>
         <td>
-            <form @submit="changeRequest" :id="id" :class="noExecutor">
-                <button class="btn waves-effect green light-3" type="submit" name="change">Принять</button>
+            <ul id="nav-mobile" class="hide-on-med-and-down nav-menu">
+                <li>
+                    <div>{{ user_compiler }}</div>
+                    <ul class="li-menu">
+                        <li><a :href="`tel:${phone_user}`"> {{ phone_user }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </td>
+        <td>{{ priority }}</td>
+        <td>
+            <form @submit="showModalBox" :id="id">
+                <button class="btn waves-effect green darken-3" type="submit" name="action">Согласовать</button>
             </form><br>
-             <form @submit="cancelRequest" :id="id">
+            <form @submit="cancelRequest" :id="id">
                 <button class="btn waves-effect red darken-3" type="submit" name="cancel">Отказаться</button>
             </form>
         </td>
     </tr>
 </template>
-<style scoped>
-    .hideButton{
-        display: none;
-    }
 
-    .showButton{
-        display: block;
-    }
-</style>
 <script> 
     import M from 'materialize-css';
 
     export default {
-        name: "RequestAdmin",
+        name: "RequestDispatcher",
         props: {
             id: String,
             created_date: String,
             title: String,
             comment: String,
+            user_compiler: String,
+            phone_user: String,
             priority: String,
-            executor: String,
-            completion_date: String,
-            changeRequest: Function,
+            showModalBox: Function,
             cancelRequest: Function,
         },
         mounted(){
@@ -57,15 +56,6 @@
             return{
                 offices: [],
             }
-        },
-        computed: {
-            noExecutor: function() {
-                if(this.executor == undefined) {
-                    return "showButton";
-                } else {
-                    return "hideButton";
-                }
-            },
         }
     }
 </script>

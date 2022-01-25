@@ -3,10 +3,10 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">&nbsp;Система заявок. Панель администратора</a>
+                    <a href="#" class="brand-logo">&nbsp;Панель руководителя</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
                         <li>
-                            <div>Привет, {{ office_name }}</div>
+                            <div>Привет, {{  }}</div>
                             <ul class="li-menu">
                                 <li><a @click="onExit">Выйти</a></li>
                             </ul>
@@ -35,7 +35,7 @@
                 </thead>
 
                 <tbody>
-                    <RequestAdmin v-for="request in this.requests" :key="request.id" 
+                    <RequestDirector v-for="request in this.requests" :key="request.id" 
                         :created_date="request.created_date" :title="request.title" 
                         :comment="request.comment" :priority="request.priority" 
                         :completion_date="request.completion_date" :id="request.id"
@@ -67,12 +67,12 @@
 
 <script>
     import M from 'materialize-css';
-    import RequestAdmin from '../components/RequestAdmin.vue';
+    import RequestDirector from '../components/RequestDirector.vue';
     import { signout, adminInfo, requestChange } from '../helpers/fetch.js'
     export default {
-        name: "AdminPanel",
+        name: "DirectorPanel",
         components: {
-          RequestAdmin,
+          RequestDirector,
         },
         methods: {
             onExit(e){
@@ -92,16 +92,13 @@
             },
             changeRequest(e){
                 e.preventDefault();
-                requestChange(localStorage.getItem("token"), e.target.id).then(data => {
-                    this.requests = data['requests'];
-                });
             },
             cancelRequest(e){
                 e.preventDefault();
             }
         },
         created() {
-            adminInfo(localStorage.getItem("token")).then(data => {
+        directorInfo(localStorage.getItem("token")).then(data => {
                 this.office_name = data['office'];
                 this.requests = data['requests'];
             });

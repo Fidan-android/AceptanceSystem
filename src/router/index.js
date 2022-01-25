@@ -42,8 +42,12 @@ async function lazyLoadView(token) {
     return import('../views/UserPanel.vue');
   } else if (permission == "admin") {
     return import('../views/AdminPanel.vue');
-  } else {
+  } else if (permission == "disp") {
     return import('../views/DispatcherPanel.vue');
+  } else if (permission == "matcher") {
+    return import('../views/MatcherPanel.vue');
+  } else if (permission == "director") {
+    return import('../views/DirectorPanel.vue');
   }
 }
 

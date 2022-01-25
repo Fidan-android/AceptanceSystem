@@ -28,16 +28,20 @@ a {
 }
 
 .li-menu a {
-    color: #fff;
+    color: #000;
 }
 
 .li-menu li {
-    background-color: #51aaa1;
-    border-top: 1px solid #47948c;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 10px;
 }
 
 .nav-menu li:hover > ul {
-    display: flex;
+    display: block;
+    z-index: 1000;
+    position: absolute;
+    padding: 20px;
     animation: ani 0.4s forwards;
 }
 
@@ -156,6 +160,7 @@ a {
 
 .close_btn {
     background: url('../img/close_icon.png') center no-repeat;
+    color: white;
     background-size: cover;
     width: 28px;
     height: 28px;

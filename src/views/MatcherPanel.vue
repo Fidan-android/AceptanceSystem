@@ -3,7 +3,7 @@
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">&nbsp;Система заявок. Панель диспетчера</a>
+                    <a href="#" class="brand-logo">&nbsp;Система заявок. Панель согласующего ({{ matcher_name }})</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-menu">
                         <li>
                             <div>Привет, {{ username }}</div>
@@ -24,7 +24,7 @@
         <CancelWindow v-if="this.showCancelModal" :onCloseModal="this.onCloseCancelModal" :onSaveModal="this.onSaveCancelModal"/>
     
         <section class="c-table" v-if="loaded">
-            <h5>Текущие заявки</h5>
+            <h5>Заявки на согласование</h5>
             <table class="striped centered" >
                 <thead>
                 <tr>
@@ -37,7 +37,7 @@
                 </thead>
 
                 <tbody>
-                    <RequestDispatcher v-for="request in this.requests" :key="request.id" 
+                    <RequestMatcher v-for="request in this.requests" :key="request.id" 
                         :title="request.title" :comment="request.comment" 
                         :user_compiler="request.user_compiler" :phone_user="request.phone_user" :priority="request.priority"
                         :id="request.id" :created_date="request.created_date" 
@@ -71,23 +71,22 @@
 
 <script>
     import M from 'materialize-css';
-    import { signout } from '../helpers/fetch.js';
-    import { dispatcherInfo } from '../helpers/fetch.js';
-    import { redirectToOffice } from '../helpers/fetch.js';
-    import RequestDispatcher from '../components/RequestDispatcher.vue';
+    import { signout, matcherInfo } from '../helpers/fetch.js';
+    import RequestMatcher from '../components/RequestMatcher.vue';
     import ModalWindow from '../components/ModalWindow.vue';
     import CancelWindow from '../components/CancelWindow.vue';
 
     export default {
-        name: "DispatcherPanel",
+        name: "MatcherPanel",
         components: {
-          RequestDispatcher,
+          RequestMatcher,
           ModalWindow,
           CancelWindow,
         },
         created() {
-            dispatcherInfo(localStorage.getItem("token")).then(data => {
+            matcherInfo(localStorage.getItem("token")).then(data => {
                 this.username = data['fullname'];
+                this.matcher_name = data['matcher_name'];
                 this.requests = data['requests'];
             });
         },
@@ -99,6 +98,7 @@
         data(){
             return {
                 username: "",
+                matcher_name: "",
                 requests: [],
                 showModal: false,
                 showCancelModal: false,
